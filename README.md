@@ -77,25 +77,25 @@ This project is a Console RPG game implemented in C# using .NET 8. The game allo
 - **Features Implemented**: All required, "C" level, and "B" level features, as well as the additional "A" level features.
 
 
-#### Additional Features Not Listed in the Guidelines
+## Additional Features Not Listed in the Guidelines
 
-##Map Functionality
+### Map Functionality
 - Feature: Display a map of the rooms and update it as the player navigates.
 -	Implementation: The MapManager class handles the loading, updating, and displaying of the map. The map is updated to reflect the player's current room and any changes in room connections.
 
-## Inventory Management
+### Inventory Management
 •	**Feature**: Comprehensive inventory management, including searching, listing, sorting, equipping, using, and removing items.
 •	**Implementation**: The ShowInventoryMenu method provides a menu for inventory management, and various methods (SearchItemByName, ListItemsByType, SortItems, EquipItem, UseItem, RemoveItem) handle specific inventory actions.
 
-## Room Connections Management
+### Room Connections Management
 •	**Feature**: Modify room connections dynamically.
 •	**Implementation**: The ModifyRoomConnections method allows users to update the connections between rooms, ensuring the game world can be dynamically altered.
 
-## Monster Management
+### Monster Management
 •	**Feature**: Load monsters into random rooms and handle their interactions with the player.
 •	**Implementation**: The LoadMonsters method populates rooms with monsters, and the AttackCharacter method handles combat interactions between the player and monsters.
 
-## Summary of Additional Features
+### Summary of Additional Features
 •	**Map Functionality**: Display and update a map of the rooms.
 •	**Inventory Management**: Comprehensive management of inventory items.
 •	**Room Connections Management**: Dynamic modification of room connections.
