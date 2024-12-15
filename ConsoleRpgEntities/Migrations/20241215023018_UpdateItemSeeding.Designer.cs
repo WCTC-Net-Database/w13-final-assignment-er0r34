@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleRpgEntities.Migrations
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20241215023018_UpdateItemSeeding")]
+    partial class UpdateItemSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,6 +168,49 @@ namespace ConsoleRpgEntities.Migrations
                     b.ToTable("Inventory");
                 });
 
+            modelBuilder.Entity("ConsoleRpgEntities.Models.Equipments.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Attack")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Defense")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("InventoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("decimal(5, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Items");
+                });
+
             modelBuilder.Entity("ConsoleRpgEntities.Models.Rooms.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -207,49 +253,6 @@ namespace ConsoleRpgEntities.Migrations
                     b.HasIndex("WestId");
 
                     b.ToTable("Rooms");
-                });
-
-            modelBuilder.Entity("Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Attack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InventoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(5, 2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InventoryId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Player", b =>
@@ -342,12 +345,12 @@ namespace ConsoleRpgEntities.Migrations
 
             modelBuilder.Entity("ConsoleRpgEntities.Models.Equipments.Equipment", b =>
                 {
-                    b.HasOne("Item", "Armor")
+                    b.HasOne("ConsoleRpgEntities.Models.Equipments.Item", "Armor")
                         .WithMany()
                         .HasForeignKey("ArmorId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Item", "Weapon")
+                    b.HasOne("ConsoleRpgEntities.Models.Equipments.Item", "Weapon")
                         .WithMany()
                         .HasForeignKey("WeaponId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -366,6 +369,17 @@ namespace ConsoleRpgEntities.Migrations
                         .IsRequired();
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("ConsoleRpgEntities.Models.Equipments.Item", b =>
+                {
+                    b.HasOne("ConsoleRpgEntities.Models.Equipments.Inventory", null)
+                        .WithMany("Items")
+                        .HasForeignKey("InventoryId");
+
+                    b.HasOne("Player", null)
+                        .WithMany("InventoryItems")
+                        .HasForeignKey("PlayerId");
                 });
 
             modelBuilder.Entity("ConsoleRpgEntities.Models.Rooms.Room", b =>
@@ -393,17 +407,6 @@ namespace ConsoleRpgEntities.Migrations
                     b.Navigation("South");
 
                     b.Navigation("West");
-                });
-
-            modelBuilder.Entity("Item", b =>
-                {
-                    b.HasOne("ConsoleRpgEntities.Models.Equipments.Inventory", null)
-                        .WithMany("Items")
-                        .HasForeignKey("InventoryId");
-
-                    b.HasOne("Player", null)
-                        .WithMany("InventoryItems")
-                        .HasForeignKey("PlayerId");
                 });
 
             modelBuilder.Entity("Player", b =>

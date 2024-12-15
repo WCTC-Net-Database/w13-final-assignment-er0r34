@@ -115,4 +115,12 @@ public class OutputManager
             .Padding(1, 1, 1, 1)
             .Header($"Logs ({_logContent.Count})");
     }
+    public void ClearLogEntries()
+    {
+        _logContent.Clear();
+        _layout["Logs"].Update(CreateLogPanel());
+        AnsiConsole.Cursor.SetPosition(0, 0);
+        AnsiConsole.Write(_layout);
+    }
+
 }
