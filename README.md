@@ -77,7 +77,7 @@ This project is a Console RPG game implemented in C# using .NET 8. The game allo
 - **Features Implemented**: All required, "C" level, and "B" level features, as well as the additional "A" level features.
 
 
-### Additional Features Not Listed in the Guidelines
+#### Additional Features Not Listed in the Guidelines
 
 ##Map Functionality
 - Feature: Display a map of the rooms and update it as the player navigates.
