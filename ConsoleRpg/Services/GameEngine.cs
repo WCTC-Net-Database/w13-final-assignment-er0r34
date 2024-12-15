@@ -130,11 +130,15 @@ public class GameEngine
     {
         while (true)
         {
+            _outputManager.ClearLogEntries(); // Clear previous log entries
             _outputManager.AddLogEntry("1. Add Room");
             _outputManager.AddLogEntry("2. Display Room Details");
             _outputManager.AddLogEntry("3. Display All Rooms");
             _outputManager.AddLogEntry("4. Modify Room Connections");
-            _outputManager.AddLogEntry("5. Back to Main Menu");
+            _outputManager.AddLogEntry("5. List Characters in Room by Attribute");
+            _outputManager.AddLogEntry("6. List All Rooms with Characters");
+            _outputManager.AddLogEntry("7. Find Equipment and Location");
+            _outputManager.AddLogEntry("8. Back to Main Menu");
             var input = _outputManager.GetUserInput("Choose an action:");
 
             switch (input)
@@ -152,6 +156,15 @@ public class GameEngine
                     ModifyRoomConnections();
                     break;
                 case "5":
+                    ListCharactersInRoomByAttribute();
+                    break;
+                case "6":
+                    ListAllRoomsWithCharacters();
+                    break;
+                case "7":
+                    FindEquipmentAndLocation();
+                    break;
+                case "8":
                     return;
                 default:
                     _outputManager.AddLogEntry("Invalid selection. Please choose a valid option.");
@@ -1115,6 +1128,96 @@ public class GameEngine
         _outputManager.AddLogEntry($"Equipment '{name}' added with Type: {type}, Attack: {attack}, Defense: {defense}, Weight: {weight}, Value: {value}.");
     }
 
+    public void ListCharactersInRoomByAttribute()
+    {
+        var attribute = _outputManager.GetUserInput("Enter attribute to filter by (Health, Attack, Name):");
+        var currentRoom = _context.Rooms.Include(r => r.Players).FirstOrDefault(r => r.Id == _player.RoomId);
+
+        if (currentRoom == null)
+        {
+            _outputManager.AddLogEntry("You are not in any room.");
+            return;
+        }
+
+        var players = currentRoom.Players.AsQueryable();
+
+        switch (attribute.ToLower())
+        {
+            case "health":
+                players = players.OrderBy(p => p.Health);
+                break;
+            case "attack":
+                players = players.OrderBy(p => p.Attack);
+                break;
+            case "name":
+                players = players.OrderBy(p => p.Name);
+                break;
+            default:
+                _outputManager.AddLogEntry("Invalid attribute. Please enter 'Health', 'Attack', or 'Name'.");
+                return;
+        }
+
+        _outputManager.AddLogEntry($"Characters in room '{currentRoom.Name}' sorted by {attribute}:");
+        foreach (var player in players)
+        {
+            _outputManager.AddLogEntry($"Name: {player.Name}, Health: {player.Health}, Attack: {player.Attack}, Defense: {player.Defense}");
+        }
+    }
+
+    public void ListAllRoomsWithCharacters()
+    {
+        var rooms = _context.Rooms.Include(r => r.Players).ToList();
+
+        foreach (var room in rooms)
+        {
+            _outputManager.AddLogEntry($"Room: {room.Name}, Description: {room.Description}");
+            if (room.Players.Any())
+            {
+                _outputManager.AddLogEntry("Inhabitants:");
+                foreach (var player in room.Players)
+                {
+                    _outputManager.AddLogEntry($"- {player.Name} (Health: {player.Health}, Attack: {player.Attack}, Defense: {player.Defense})");
+                }
+            }
+            else
+            {
+                _outputManager.AddLogEntry("No inhabitants in this room.");
+            }
+        }
+    }
+
+    public void FindEquipmentAndLocation()
+    {
+        var itemName = _outputManager.GetUserInput("Enter the name of the item to search for:");
+        var item = _context.Items.FirstOrDefault(i => i.Name.ToLower() == itemName.ToLower());
+
+        if (item == null)
+        {
+            _outputManager.AddLogEntry($"Item '{itemName}' not found.");
+            return;
+        }
+
+        var equipment = _context.Equipments
+            .Include(e => e.Weapon)
+            .Include(e => e.Armor)
+            .FirstOrDefault(e => e.WeaponId == item.Id || e.ArmorId == item.Id);
+
+        if (equipment == null)
+        {
+            _outputManager.AddLogEntry($"No equipment found for item '{itemName}'.");
+            return;
+        }
+
+        var player = _context.Players.Include(p => p.Room).FirstOrDefault(p => p.EquipmentId == equipment.Id);
+
+        if (player == null)
+        {
+            _outputManager.AddLogEntry($"No character found holding the item '{itemName}'.");
+            return;
+        }
+
+        _outputManager.AddLogEntry($"Item '{itemName}' is held by character '{player.Name}' in room '{player.Room.Name}'.");
+    }
 
 
 }
