@@ -1,5 +1,58 @@
 ﻿### FINAL PRESENTATION - ConsoleRPG EF Core Application
 
+Project Features and Grading Levels
+Minimum Requirements
+Add a New Character to the Database
+•	Feature: Prompt the user to enter details for a new character (e.g., Name, Health, Attack, and Defense).
+•	Implementation: Save the updated record to the database.
+Edit an Existing Character
+•	Feature: Allow users to update attributes like Health, Attack, Defense, and add a weapon.
+•	Implementation: Save the updated record to the database.
+Display All Characters
+•	Feature: Display all characters with relevant details.
+•	Implementation: Include details such as Name, Health, Attack, Defense, and Experience.
+Search for a Specific Character by Name
+•	Feature: Perform a case-insensitive search for a character by name.
+•	Implementation: Display detailed information about the character.
+Logging
+•	Feature: Log all user interactions, such as adding, editing, or displaying data.
+•	Implementation: Ensure logging is in place for all user actions.
+"C" Level (405/500 points)
+Add Abilities to a Character
+•	Feature: Allow users to add abilities to existing characters.
+•	Implementation: Prompt for related ability details (e.g., Name, Attack Bonus, Defense Bonus, etc.) and associate the ability with the character. Save the updated record to the database and confirm the addition to the user.
+Display Character Abilities
+•	Feature: Display all abilities for a selected character.
+•	Implementation: Include properties such as Name, Attack Bonus, Defense Bonus, etc.
+Execute an Ability During an Attack
+•	Feature: Ensure abilities are executed during an attack and display the appropriate output.
+•	Implementation: Integrate ability execution into the attack process.
+"B" Level (445/500 points)
+Add New Room
+•	Feature: Prompt the user to enter a room name, description, and other needed properties.
+•	Implementation: Optionally add a character, player, etc., to the room. Save the room to the database and confirm the addition to the user.
+Display Details of a Room
+•	Feature: Display all associated properties of the room.
+•	Implementation: Include a list of any inhabitants in the room and handle cases where the room has no characters gracefully.
+Navigate the Rooms
+•	Feature: Allow the character to navigate through the rooms and display room details upon entering.
+•	Implementation: Display room details such as name, description, inhabitants, special features, etc.
+"A" Level (475/500 points)
+List Characters in the Room by Selected Attribute
+•	Feature: Allow users to find the character in the room matching criteria (e.g., Health, Attack, Name, etc.).
+•	Implementation: Implement functionality to filter and display characters based on the selected attribute.
+List All Rooms with All Characters in Those Rooms
+•	Feature: Group characters by their room and display them in a formatted list.
+•	Implementation: Display all rooms with their associated characters.
+Find a Specific Piece of Equipment and List the Associated Character and Location
+•	Feature: Allow a user to specify the name of an item and output the following:
+•	Character holding the item
+•	Location of the character
+•	Implementation: Implement functionality to search for equipment and display the associated character and their location.
+Grading Level Attempted
+•	Attempted Grading Level: "A" Level (475/500 points)
+•	Features Implemented: All required, "C" level, and "B" level features, as well as the additional "A" level features.
+
 #### Basic Required functionality:
 - **Add a new Character to the database**
   - Prompt the user to enter details for your character (e.g. Name, Health, Attack, and Defense).
